@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <style>
+        /* Previous styles remain the same */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ffc2d1, #ffb3c6);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #ff8fab;
+            font-family: "Dancing Script", cursive;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        h3, p {
+            color: #ff8fab;
+            font-family: "Dancing Script", cursive;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        .gif-container {
+            margin: 1rem 0;
+        }
+        .gif-container img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 15px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        #yesBtn {
+            background-color: #ff8fab;
+            color: #ffe5ec;
+        }
+        #noBtn {
+            background-color: #ff8fab;
+            color: #ffe5ec;
+            position: relative;
+        }
+        #yesBtn:hover {
+            transform: scale(1.1);
+        }
+        .date-options, .final-options, .me-options {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .date-card {
+            background: #ffe5ec;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .date-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .date-card:hover {
+            transform: scale(1.05);
+        }
+        #heartsContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+        .heart {
+            position: fixed;
+            animation: float 4s linear;
+        }
+        
+        /* New styles for fade animations */
+        .fade-out {
+            animation: fadeOut 0.5s;
+            opacity: 0;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        .final-date-card {
+            background: #ffe5ec;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .final-date-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .final-date-card:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -60%); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .me-options-card {
+            background: #ffe5ec;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .me-options-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        
+        .me-options-card:hover {
+            transform: scale(1.05);
+        }
+
+        #final-message {
+            display:none;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div id="heartsContainer"></div>
+    <div class="container" id="mainContainer">
+        <h1>Will you be my Valentine? 💗ྀི</h1>
+        <div class="gif-container">
+            <img src="https://i.pinimg.com/originals/e6/a3/62/e6a36211878c528e1bf11ba1bd2a09f7.gif" alt="Cute Valentine GIF">
+        </div>
+        <div class="buttons">
+            <button id="yesBtn">Yes!</button>
+            <button id="noBtn">No</button>
+        </div>
+        <div class="date-options" id="dateOptions">
+            <div class="date-card" id="mysteryBox">
+                <h3>Mystery Box</h3>
+                <img src="https://i.pinimg.com/originals/97/19/97/9719979e14c63bd39cab6b1ed86b3d25.gif" alt="Mystery">
+                <p>You'll never imagine</p>
+            </div>
+            <div class="date-card fake-option">
+                <h3>Stuff 1</h3>
+                <img src="https://i.pinimg.com/originals/d8/33/26/d8332608cee2ae5e39709c6696bcee32.gif" alt="Movie">
+                <p>Not an option ㅎㅎ</p>
+            </div>
+            <div class="date-card fake-option">
+                <h3>Stuff 2</h3>
+                <img src="https://i.pinimg.com/originals/f0/06/73/f006737418ddf99a968d0e3e62fcd283.gif" alt="Picnic">
+                <p>Not an option either ㅎㅎ</p>
+            </div>
+        </div>
+        <div class="final-options" id="finalOptions">
+            <div class="final-date-card fake-option">
+                <h3>Movie Marathon</h3>
+                <img src="https://i.pinimg.com/originals/f5/06/18/f506183a76d97f23634b31eab0bc2501.gif" alt="Movie">
+                <p>This ain't it</p>
+            </div>
+            <div class="final-date-card fake-option nono">
+                <h3>Leaving Early</h3>
+                <img src="https://i.pinimg.com/originals/f5/06/18/f506183a76d97f23634b31eab0bc2501.gif" alt="LE">
+                <p>Try clicking I dare you</p>
+            </div>
+            <div class="final-date-card" id="buymeflowers">
+                <h3>Buy me flowers</h3>
+                <img src="https://i.pinimg.com/736x/8a/c6/15/8ac615e4a57aa1dac0ac401703aa8b2b.jpg" alt="Flowers">
+                <p>이거 골라 ㅎㅎ</p>
+            </div>
+            <div class="final-date-card fake-option">
+                <h3>I don't even know</h3>
+                <img src="https://i.pinimg.com/originals/f5/06/18/f506183a76d97f23634b31eab0bc2501.gif" alt="IDK">
+                <p>You know this aint it either</p>
+            </div>
+        </div>
+
+        <div class="me-options" id="meOptions">
+            <div class="me-options-card fake-option">
+                <h3>My looks</h3>
+                <img src="https://i.pinimg.com/originals/5e/8f/2f/5e8f2f5cafcdf899921619854de340fb.gif" alt="look">
+                <p>This ain't it</p>
+            </div>
+            <div class="me-options-card fake-option">
+                <h3>My boogers</h3>
+                <img src="https://i.pinimg.com/originals/4c/09/33/4c09339ba33a77d19922078275ad27dc.gif" alt="booger">
+                <p>Try clicking I dare you</p>
+            </div>
+            <div class="me-options-card" id="answer">
+                <h3>Because it's me</h3>
+                <img src="https://i.pinimg.com/originals/ac/22/fe/ac22fecaad492cc6ee36e1eb93b1d6d7.gif" alt="me">
+                <p>이거 골라 ㅎ</p>
+            </div>
+            <div class="me-options-card fake-option nono">
+                <h3>I'm dumb</h3>
+                <img src="https://i.pinimg.com/originals/6a/f3/71/6af371f102361c0fd47619eb524bf4bb.gif" alt="dumb">
+                <p>ㅎㅎ 이 골르면 큰일 나는 거얌</p>
+            </div>                
+        </div>        
+    </div>
+
+        
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const finalMessage = document.getElementById('finalMessage')
+        const dateOptions = document.getElementById('dateOptions');
+        const finalOptions = document.getElementById('finalOptions');
+        const meOptions = document.getElementById('meOptions');
+        const mainContainer = document.getElementById('mainContainer');
+        const heartsContainer = document.getElementById('heartsContainer');
+        
+        // Handle fake options
+        document.querySelectorAll('.fake-option').forEach(option => {
+        option.addEventListener('click', function() {
+            showErrorMessage("Oops! This isn't a real option ㅎㅎ");
+            this.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                this.style.display = 'none';
+            }, 500);
+        });
+    });
+
+    document.querySelectorAll('.nono').forEach(option => {
+    option.addEventListener('click', function() {
+        // Create an image element
+        const errorImage = document.createElement('img');
+        errorImage.src = 'https://i.pinimg.com/originals/26/52/cb/2652cbaed99e46df91900a1fbfa2ecbb.gif'; // Replace with your desired GIF URL
+        errorImage.alt = 'Error';
+        errorImage.style.position = 'fixed';
+        errorImage.style.top = '50%';
+        errorImage.style.left = '50%';
+        errorImage.style.transform = 'translate(-50%, -50%)';
+        errorImage.style.width = '1000px'; // Adjust as needed
+        errorImage.style.height = 'auto';
+        errorImage.style.zIndex = '9999';
+
+        // Append the image to the body
+        document.body.appendChild(errorImage);
+
+        // Remove the image after 2 seconds
+        setTimeout(() => {
+            errorImage.remove();
+        }, 2000);
+
+        // Add fade-out effect to the clicked card
+        this.style.animation = 'fadeOut 0.5s';
+        setTimeout(() => {
+            this.style.display = 'none';
+        }, 500);
+    });
+});
+
+
+    // Function to show error message
+    function showErrorMessage(message) {
+        let errorBox = document.createElement('div');
+        errorBox.textContent = message;
+        errorBox.style.position = 'fixed';
+        errorBox.style.top = '20%';
+        errorBox.style.left = '50%';
+        errorBox.style.transform = 'translate(-50%, -50%)';
+        errorBox.style.background = '#ff8fab';
+        errorBox.style.color = '#fff';
+        errorBox.style.padding = '10px 20px';
+        errorBox.style.borderRadius = '10px';
+        errorBox.style.boxShadow = '0 0 10px rgba(0,0,0,0.2)';
+        errorBox.style.fontSize = '1.2rem';
+        errorBox.style.zIndex = '1000';
+        errorBox.style.animation = 'fadeIn 0.3s, fadeOut 1s 1.5s';
+
+        document.body.appendChild(errorBox);
+
+        setTimeout(() => {
+            errorBox.remove();
+        }, 2500);
+    }
+        
+        // Handle mystery box click
+        document.getElementById('mysteryBox').addEventListener('click', function() {
+            dateOptions.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                dateOptions.style.display = 'none';
+                document.querySelector('h1').textContent = 'Activity to do';
+                finalOptions.style.display = 'grid';
+            }, 500);
+        });
+
+        document.getElementById('buymeflowers').addEventListener('click', function() {
+            finalOptions.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                finalOptions.style.display = 'none';
+                document.querySelector('h1').textContent = 'What you Like About Me';
+                meOptions.style.display = 'grid';
+            }, 500);
+        });
+
+        document.getElementById('answer').addEventListener('click', function() {
+    // Start the fade-out animation on 'meOptions'
+    document.getElementById('meOptions').style.animation = 'fadeOut 0.5s';
+
+        // After the animation is complete, hide the 'meOptions' and show the message
+        setTimeout(() => {
+            // Hide 'meOptions'
+            document.getElementById('meOptions').style.display = 'none';
+
+            // Update the <h1> text content
+            document.querySelector('h1').textContent = "I'll be your Valentine! 💗 You passed the test!";
+
+            // Create the <img> element for the GIF
+            const gifImage = document.createElement('img');
+            gifImage.src = "https://i.pinimg.com/originals/67/03/cc/6703cc8f8025065a565efa3fd6520ce2.gif";
+            gifImage.alt = "Valentine GIF";
+
+            // Append the image to the .gif-container (assuming you have a container with class 'gif-container')
+            document.querySelector('gif-container img').appendChild(gifImage);
+        }, 500); // Delay for the fade-out animation to complete
+    });
+
+
+
+
+
+
+        noBtn.addEventListener('mouseover', () => {
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        yesBtn.addEventListener('click', () => {
+            document.querySelector('.buttons').style.display = 'none';
+            document.querySelector('.gif-container').style.display = 'none';
+            document.querySelector('h1').textContent = 'Yay! Pick a present! (๑ᵔ⤙ᵔ๑)';
+            dateOptions.style.display = 'grid';
+            createHearts();
+        });
+
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '<img src="https://cdn3.emoji.gg/emojis/88234-kuromi-heart.gif" alt="heart" width="30">';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '100vh';
+                heart.style.animation = 'float 4s linear';
+                heartsContainer.appendChild(heart);
+                setTimeout(() => {
+                    heart.remove();
+                }, 4000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
